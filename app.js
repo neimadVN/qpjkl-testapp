@@ -41,7 +41,8 @@ app.use(function(err, req, res, next) {
 //==========[ Keep heroku app alway awake ]===========
 var http = require("http");
 setInterval(function() {
-    http.get("http://pqjkl-testapp.herokuapp.com/");
+  console.log('[HTTP] - preventing heroku from sleeping: ' + (new Date).toString());
+  http.get("http://pqjkl-testapp.herokuapp.com/");
 }, 300000); // every 5 minutes (300000)
 //====================================================
 
