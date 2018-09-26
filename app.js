@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var MongoClient = require('mongodb').MongoClient;
 
 var indexRouter = require('./routes');
 var usersRouter = require('./routes/users');
@@ -22,6 +23,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+// connect to DB
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -38,12 +42,28 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+//================[ Connect to DB ]===================
+const mongoose = require('mongoose');
+
+const databaseURI = process.env.DATABASE_URI || 'mongodb://localhost:27017/pqjkl-testapp-herokusaver';
+
+mongoose.connect(databaseURI).then(() => {
+  console.log('[MongoDB]: connected!');
+}).catch((err) => {
+  console.log('[MongoDB]: cannot connect to db');
+  console.log(err);
+});
+
+//====================================================
 //==========[ Keep heroku app alway awake ]===========
-var http = require("http");
-setInterval(function() {
-  console.log('[HTTP] - preventing heroku from sleeping: ' + (new Date).toString());
-  http.get("http://pqjkl-testapp.herokuapp.com/");
-}, 300000); // every 5 minutes (300000)
+var Job = require('./cloud/job');
+setTimeout(() => {
+  Job.saveHeroku(process.env.PING_INTERVAL || 1500000);
+}, 3000); 
+
+if (process.env.DO_MIGRATE || false) {
+  Job.initDatabase();
+}
 //====================================================
 
 module.exports = app;
