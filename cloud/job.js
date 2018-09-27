@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 mongoose.Promise = Promise;
 
-var http = require("http");
+var http = require("http-https");
 
 const Pinglink = require('../models/Pinglink');
 const PinglinkMigrate = require('../config/migrate.json').Pinglink;

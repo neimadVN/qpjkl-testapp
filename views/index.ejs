@@ -3,9 +3,70 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+      .error-flash {
+        color: red;
+        background-color: #ffffcc;
+        padding: 10px;
+        max-width: 465px;
+        visibility: hidden;
+      }
+    </style>
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <p>Welcome to <%= testKey %></p>
+    <form action="/" method="post">
+      <input type="url" style="min-width: 480px;" name="link" value="" required placeholder="your url, ex: http://www.yourplace.com">
+      <input type="submit" value="Submit">
+    </form>
+    <div class="error-flash"></div>
+    <div id="linklist">
+      <ul>
+        <% for( let i in linkList) { %>
+        <li>
+          <% const currLink = linkList[i].link; %>
+          <a target="_blank" href="
+            <%- currLink%>
+          ">
+            <%- currLink%>
+          </a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+
+    <script>
+      $(document).ready(function(){
+          $('input[type="submit"]').click(function(event){
+            event.preventDefault();
+
+            const data = {
+              link: $('input[name="link"]').val()
+            }
+
+            $.ajax({
+              type: 'POST',
+              url: "/",
+              data: data,
+            }).done((res) => {
+              if (res.status == 'ok') {
+                flashLog(res.msg);
+                $('#linklist').load(document.URL +  ' #linklist');
+              } else {
+                flashLog(res.msg);
+              }
+            }).catch((err) => {
+              flashLog(err);
+            });
+          });
+      });
+
+      function flashLog(msg) {
+        $('.error-flash').css('visibility', 'visible');
+        $('.error-flash').html(msg);
+      }
+    </script>
   </body>
 </html>
