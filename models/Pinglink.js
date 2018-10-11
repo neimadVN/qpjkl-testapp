@@ -8,6 +8,9 @@ const shema = new mongooseShema({
         type: 'string',
         required: true,
         unique: 'link duplicated ({VALUE})'
+    },
+    status: {
+        type: 'string'
     }
 });
 

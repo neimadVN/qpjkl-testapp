@@ -1,0 +1,9 @@
+  
+    <%_ if (typeof jsFiles != 'undefined' && jsFiles.length) { -%>
+      <%_ jsFiles.forEach(function(file) { -%>
+      <script type="text/javascript" src="/<%= file; %>"></script>
+      <%_ }); -%>
+    <%_ } -%>
+
+  </body>
+</html>

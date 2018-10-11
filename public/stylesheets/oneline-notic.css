@@ -1,0 +1,17 @@
+.oneline-notic {
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 5px
+}
+
+.oneline-notic.oneline-notic-success {
+  background-color: lightgreen;
+  color: green;
+  border: 1px solid green;
+}
+
+.oneline-notic.oneline-notic-danger {
+  background-color: lightcoral;
+  color: darkred;
+  border: 1px solid red;
+}
